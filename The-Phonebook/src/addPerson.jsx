@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios from 'axios'
 import React from 'react'
+import personService from './services/persons'
 
-const AddPerson = ({ newName, newNumber, handleNameChange, handleNumberChange, setPersons, persons }) => {
+const AddPerson = ({ newName, newNumber, handleNameChange, handleNumberChange, setPersons, persons, setNewName, setNewNumber}) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!newName || !newNumber) {
@@ -18,12 +19,14 @@ const AddPerson = ({ newName, newNumber, handleNameChange, handleNumberChange, s
       number: newNumber,
       id: persons.length + 1
     }
-    setPersons(persons.concat(personObject))
 
-    axios
-      .post('http://localhost:3001/persons', personObject)
+
+   personService
+      .create(personObject)
       .then(response => {
         setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNumber('')
       })
   }
 

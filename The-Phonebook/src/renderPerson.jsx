@@ -1,7 +1,6 @@
 import React from "react"
 
-const RenderPersons = ({ persons}) => {
- <h2>Numbers</h2>
+const renderPersons = ({ persons}) => {
   return (
     <div>
       <h2>Numbers</h2>
@@ -13,4 +12,4 @@ const RenderPersons = ({ persons}) => {
     </div>
   )
 }
-export default RenderPersons
+export default renderPersons

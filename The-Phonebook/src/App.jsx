@@ -3,19 +3,19 @@ import axios from 'axios'
 import Filter from '/src/Filter.jsx'
 import AddPerson from '/src/AddPerson.jsx'
 import RenderPersons from './renderPerson'
+import personService from './services/persons'
 
 
 const App = () => {
   const [persons, setPersons] = useState([])
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
-  }
-  , [])
+   personService
+   .getAll()
+   .then(response => {
+      setPersons(response.data)
+   })
+  }, [])
 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -38,7 +38,7 @@ const App = () => {
     ? persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
     : persons
 
-
+   
   return (
     <div>
       <h2>Phonebook</h2>
@@ -51,6 +51,8 @@ const App = () => {
         handleNumberChange={handleNumberChange}
         setPersons={setPersons}
         persons={persons}
+        setNewName={setNewName}
+        setNewNumber={setNewNumber}
         />
       <RenderPersons persons={personsToShow} />
     </div>
