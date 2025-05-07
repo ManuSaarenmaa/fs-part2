@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react'
 
 const AddPerson = ({ newName, newNumber, handleNameChange, handleNumberChange, setPersons, persons }) => {
@@ -17,9 +18,16 @@ const AddPerson = ({ newName, newNumber, handleNameChange, handleNumberChange, s
       number: newNumber,
       id: persons.length + 1
     }
-
     setPersons(persons.concat(personObject))
+
+    axios
+      .post('http://localhost:3001/persons', personObject)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+      })
   }
+
+    
 
   return (
     <form onSubmit={handleSubmit}>
