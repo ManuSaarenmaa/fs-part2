@@ -54,7 +54,7 @@ const App = () => {
         setNewName={setNewName}
         setNewNumber={setNewNumber}
         />
-      <RenderPersons persons={personsToShow} />
+      <RenderPersons persons={personsToShow} setPersons={setPersons} />
     </div>
   )
 }

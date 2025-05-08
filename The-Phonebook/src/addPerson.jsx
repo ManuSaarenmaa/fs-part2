@@ -9,15 +9,30 @@ const AddPerson = ({ newName, newNumber, handleNameChange, handleNumberChange, s
       alert('Please enter name and number!')
       return
     }
-    if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
+    
+    const existingPerson = persons.find(person => person.name === newName)
+    if (existingPerson) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const updatedNumber = { ...existingPerson, number: newNumber }
+        personService
+          .update(existingPerson.id, updatedNumber)
+          .then(response => {
+            setPersons(persons.map(person => person.id !== existingPerson.id ? person : response.data))
+            setNewName('')
+            setNewNumber('')
+          })
+          .catch(error => {
+            console.error("Error updating person:", error)
+            alert(`The information of ${newName} has already been removed from the server`)
+            setPersons(persons.filter(p => p.id !== existingPerson.id))
+          })
+      }
       return
     }
 
     const personObject = {
       name: newName,
-      number: newNumber,
-      id: persons.length + 1
+      number: newNumber
     }
 
 
