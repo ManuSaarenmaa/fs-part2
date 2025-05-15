@@ -1,8 +1,8 @@
-import axios from 'axios'
 import React from 'react'
 import personService from './services/persons'
 
-const AddPerson = ({ newName, newNumber, handleNameChange, handleNumberChange, setPersons, persons, setNewName, setNewNumber}) => {
+
+const AddPerson = ({ newName, newNumber, handleNameChange, handleNumberChange, setPersons, persons, setNewName, setNewNumber, setErrorMessage}) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!newName || !newNumber) {
@@ -20,10 +20,17 @@ const AddPerson = ({ newName, newNumber, handleNameChange, handleNumberChange, s
             setPersons(persons.map(person => person.id !== existingPerson.id ? person : response.data))
             setNewName('')
             setNewNumber('')
+            setErrorMessage({message: `Updated ${newName}'s number`, type: 'success'})
+            setTimeout(() => {
+              setErrorMessage({message: null, type: null})
+            }, 5000)
           })
           .catch(error => {
             console.error("Error updating person:", error)
-            alert(`The information of ${newName} has already been removed from the server`)
+            setErrorMessage({message: `Information of ${newName} has already been removed from server`, type: 'error'})
+            setTimeout(() => {
+              setErrorMessage({message: null, type: null})
+            }, 5000)
             setPersons(persons.filter(p => p.id !== existingPerson.id))
           })
       }
@@ -35,17 +42,18 @@ const AddPerson = ({ newName, newNumber, handleNameChange, handleNumberChange, s
       number: newNumber
     }
 
-
    personService
       .create(personObject)
       .then(response => {
         setPersons(persons.concat(response.data))
         setNewName('')
         setNewNumber('')
+        setErrorMessage({message:`Added ${newName}`, type: 'success'})
+        setTimeout(() => {
+          setErrorMessage({message: null, type: null})
+        }, 5000)
       })
   }
-
-    
 
   return (
     <form onSubmit={handleSubmit}>

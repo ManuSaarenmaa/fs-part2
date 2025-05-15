@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from '/src/Filter.jsx'
 import AddPerson from '/src/AddPerson.jsx'
 import RenderPersons from './renderPerson'
 import personService from './services/persons'
+import Notification from './notification.jsx'
 
 
 const App = () => {
@@ -20,6 +20,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [errorMessage, setErrorMessage] = useState('{message: null, type: null}')
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -42,6 +43,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
       <AddPerson
@@ -53,6 +55,7 @@ const App = () => {
         persons={persons}
         setNewName={setNewName}
         setNewNumber={setNewNumber}
+        setErrorMessage={setErrorMessage}
         />
       <RenderPersons persons={personsToShow} setPersons={setPersons} />
     </div>
